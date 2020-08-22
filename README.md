@@ -14,6 +14,8 @@ Official [OnlineAugment](https://arxiv.org/abs/2007.09271) implementation in PyT
   - State-of-the-art performance (in combination with AutoAugment). 
   
  ![](./vis/framework.png)
+ 
+ (The code is refactored, which is different from the one when writing the paper. The performance is equivalent or slightly better than the original one. It doesn't include the meta-loss for efficiency without loss of performance)
 
 ## Visualization on CIFAR-10
 
