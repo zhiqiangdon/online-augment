@@ -15,7 +15,7 @@ Official [OnlineAugment](https://arxiv.org/abs/2007.09271) implementation in PyT
   
  ![](./vis/framework.png)
  
- (In this implementation, we disable the meta-gradient for efficient training. The code is also refactored accordingly, achieving comparable performance. Especially for reduced CIFARs, we observe higher accuracy than the paper results.)
+ (In this implementation, we disable the meta-gradient for efficient training. The code is also refactored accordingly, achieving comparable performance. Especially for reduced CIFARs, we observe higher accuracy than reported in the paper.)
 
 ## Visualization on CIFAR-10
 
