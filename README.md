@@ -15,3 +15,6 @@ Official [OnlineAugment](https://arxiv.org/abs/2007.09271) implementation in PyT
 
 ## Visulization on CIFAR-10
 
+A-STN
+![](./vis/STN.mp4)
+
