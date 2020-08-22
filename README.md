@@ -55,6 +55,3 @@ If this code is helpful for your research, please cite:
 }
 ```
 
-## Contact for Issues
-- Zhiqiang Tang, zhiqiang.tang@rutgers.edu
-- Yunhe Gao, yunhe.gao@rutgers.edu
