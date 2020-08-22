@@ -12,6 +12,8 @@ Official [OnlineAugment](https://arxiv.org/abs/2007.09271) implementation in PyT
 - Orthogonal to AutoAugment and related 
   - Online v.s. Offline (Joint optimization, no expensive offline policy searching). 
   - State-of-the-art performance (in combination with AutoAugment). 
+  
+ ![](./vis/framework.png)
 
 ## Visulization on CIFAR-10
 
