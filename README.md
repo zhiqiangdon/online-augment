@@ -29,4 +29,32 @@ P-VAE
 
 ![](./vis/deform.gif)
 
+## Run
+We condected experiments in
+- python 3.7
+- pytorch 1.2, torchvision 0.4.0, cuda10
 
+The searching of policies and training of target model is optimized jointly. 
+
+For example, training wide-resnet using STN on reduced CIFAR-10, using the script in r-cifar10-wrn-scripts
+
+```
+./run-aug-stn.sh
+```
+
+
+## Citation
+If this code is helpful for your research, please cite:
+
+```
+@article{tang2020onlineaugment,
+  title={OnlineAugment: Online Data Augmentation with Less Domain Knowledge},
+  author={Tang, Zhiqiang and Gao, Yunhe and Karlinsky, Leonid and Sattigeri, Prasanna and Feris, Rogerio and Metaxas, Dimitris},
+  journal={arXiv preprint arXiv:2007.09271},
+  year={2020}
+}
+```
+
+## Contact for Issues
+- Zhiqiang Tang, zhiqiang.tang@rutgers.edu
+- Yunhe Gao, yunhe.gao@rutgers.edu
