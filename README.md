@@ -15,7 +15,7 @@ Official [OnlineAugment](https://arxiv.org/abs/2007.09271) implementation in PyT
   
  ![](./vis/framework.png)
 
-## Visulization on CIFAR-10
+## Visualization on CIFAR-10
 
 A-STN
 
