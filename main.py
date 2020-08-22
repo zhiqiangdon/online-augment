@@ -22,7 +22,7 @@ from torch.nn.parallel.data_parallel import DataParallel
 # import random
 # random.seed(manualSeed)
 # torch.manual_seed(manualSeed)
-# # if you are suing GPU
+# # # if you are suing GPU
 # torch.cuda.manual_seed(manualSeed)
 # torch.cuda.manual_seed_all(manualSeed)
 #
@@ -88,6 +88,8 @@ parser.add_argument('--alpha', default=None, type=int, help='learning rate of it
 parser.add_argument('--scale', default=None, type=float, help='scale factor of image')
 parser.add_argument('--decay_type', default=None, type=str, help='no_bn')
 parser.add_argument('--img_res', default=None, type=int, help='image resolution for noise or deformation generator')
+parser.add_argument('--inner_num', default=None, type=int, help='number of updating aug net')
+parser.add_argument('--inner_type', default=None, type=str, help='aug/both, the type of inner update')
 args = parser.parse_args()
 
 def main():
@@ -185,6 +187,10 @@ def generate_exp_id(aug_num):
                 .format(args.z_dim_deform, args.fea_dim_deform,
                         args.adv_weight_deform, args.div_weight_deform,
                         args.smooth_weight)
+    if args.inner_type is not None:
+        exp_id += 'inner_type^{}^-'.format(args.inner_type)
+    if args.inner_num is not None:
+        exp_id += 'inner_num^{}^-'.format(args.inner_num)
 
     exp_id += 'exp_type^{}^-'.format(args.exp_type)
     exp_id += 'bn_num^{}^-'.format(args.bn_num)

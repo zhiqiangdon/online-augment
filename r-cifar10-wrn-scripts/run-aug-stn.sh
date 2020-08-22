@@ -3,7 +3,7 @@
 CUDA_VISIBLE_DEVICES=4 python main.py  \
                         --data_dir /freespace/local/zt53/data \
                         --exp_dir /freespace/local/zt53/exp \
-                        --dataset cifar10 \
+                        --dataset reduced_cifar10 \
                         --model wresnet28_10 \
                         --batch_size 128 \
                         --epochs 200 \
@@ -13,6 +13,15 @@ CUDA_VISIBLE_DEVICES=4 python main.py  \
                         --weight_decay 5e-4 \
                         --workers 2 \
                         --cutout 16 \
+                        --aug_stn stn_2cycle_diverse \
+                        --noise_dim 1 \
+                        --linear_size 8 \
+                        --adv_weight_stn 0.1 \
+                        --div_weight_stn 0.1 \
+                        --diversity_weight_stn 0 \
+                        --bn_num 2 \
+                        --inner_num 4 \
                         --aug_type basic \
-                        --exp_type baseline \
+                        --exp_type aug_stn \
+
 

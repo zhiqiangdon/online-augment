@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-CUDA_VISIBLE_DEVICES=7 python main.py  \
+CUDA_VISIBLE_DEVICES=6 python main.py  \
                         --data_dir /freespace/local/zt53/data \
                         --exp_dir /freespace/local/zt53/exp \
-                        --dataset cifar100 \
+                        --dataset reduced_cifar100 \
                         --model wresnet28_10 \
                         --batch_size 128 \
                         --epochs 200 \
@@ -13,5 +13,6 @@ CUDA_VISIBLE_DEVICES=7 python main.py  \
                         --weight_decay 5e-4 \
                         --workers 2 \
                         --cutout 8 \
-                        --aug_type autoaug_cifar10 \
+                        --aug_type basic \
                         --exp_type baseline \
+

@@ -15,10 +15,8 @@ from models.resnet import ResNet
 from models.pyramidnet import PyramidNet
 from models.shakeshake.shake_resnet import ShakeResNet
 from models.wideresnet import WideResNet
-from models.wideresnet_v2 import WideResNetV2
 from models.shakeshake.shake_resnext import ShakeResNeXt
 from models.wideresnet_multibn import WideResNetMultiBN
-from models.wideresnet_multibn_v2 import WideResNetMultiBNV2
 from models.shakeshake.shake_resnet_multibn import ShakeResNetMultiBN
 from models.pyramidnet_multibn import PyramidNetMultiBN
 from models.resnet_multibin import ResNetMultiBN
@@ -49,11 +47,6 @@ def get_model(config, num_class=10, bn_types=None, data_parallel=True):
             model = WideResNet(28, 10, dropout_rate=0.0, num_classes=num_class)
         else:
             model = WideResNetMultiBN(28, 10, dropout_rate=0.0, num_classes=num_class, bn_types=bn_types)
-    elif name == 'wresnet28_10_v2':
-        if bn_types is None:
-            model = WideResNetV2(28, 10, dropout_rate=0.0, num_classes=num_class)
-        else:
-            model = WideResNetMultiBNV2(28, 10, dropout_rate=0.0, num_classes=num_class, bn_types=bn_types)
     elif name == 'shakeshake26_2x32d':
         if bn_types is None:
             model = ShakeResNet(26, 32, num_class)

@@ -143,18 +143,22 @@ def train_epoch_multi_bns(trainloader, model, epoch, config):
         # update aug_net and target_net
         model.target_net_optim.zero_grad()
 
-        if model.perturb_vae:
-            # print('updating perturb_vae...')
-            model.texture_step(input, target)
-
         if model.aug_stn:
-            # print('updating stn...')
-            model.stn_step(input, target)
+            for j in range(config.inner_num):
+                model.stn_step(input, target)
 
         if model.deform_vae:
-            # print('updating deform_vae...')
-            model.deform_step(input, target)
+            for j in range(config.inner_num):
+                model.deform_step(input, target)
 
+        if model.perturb_vae:
+            for j in range(config.inner_num):
+                model.texture_step(input, target)
+
+        # for j in range(config.inner_num):
+        #     model.comb_step(input, target)
+
+        model.target_net_optim.zero_grad()
         output_preaug = model.target_net(input_preaug, 'base')
         loss_preaug = model.criterion(output_preaug, target)
         loss_preaug.backward()

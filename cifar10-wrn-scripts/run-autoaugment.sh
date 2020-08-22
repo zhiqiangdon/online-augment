@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-CUDA_VISIBLE_DEVICES=7 python main.py  \
+CUDA_VISIBLE_DEVICES=5 python main.py  \
                         --data_dir /freespace/local/zt53/data \
                         --exp_dir /freespace/local/zt53/exp \
-                        --dataset reduced_cifar10 \
+                        --dataset cifar10 \
                         --model wresnet28_10 \
                         --batch_size 128 \
                         --epochs 200 \

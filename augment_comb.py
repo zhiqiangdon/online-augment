@@ -126,7 +126,10 @@ class Augment(object):
       self.deform_vae.train()
 
   def texture_step(self, input, target):
+    # print('updating perturb_vae...')
+    # for j in range(self.args.inner_num):
     self.perturb_vae_optim.zero_grad()
+    self.target_net_optim.zero_grad()
     input_aug, div_loss = self.perturb_vae(input, require_loss=True)
     input_aug.register_hook(lambda grad: grad * (-self.args.adv_weight_vae))
     output_aug = self.target_net(input_aug, 'texture')
@@ -138,8 +141,15 @@ class Augment(object):
     loss_aug_net.backward()
     self.perturb_vae_optim.step()
 
+    if self.args.grad_clip and self.args.grad_clip > 0:
+      nn.utils.clip_grad_norm_(self.target_net.parameters(), self.args.grad_clip)
+    self.target_net_optim.step()
+
   def stn_step(self, input, target):
+    # print('updating aug_stn...')
+    # for j in range(self.args.inner_num):
     self.aug_stn_optim.zero_grad()
+    self.target_net_optim.zero_grad()
     noise = torch.randn(input.size(0), self.args.noise_dim).cuda()
     input_aug, target_aug, div_loss, diversity_loss = \
       self.aug_stn(noise, input, target, require_loss=True)
@@ -153,10 +163,16 @@ class Augment(object):
     loss_aug_net = loss_aug + loss_div + loss_diversity
     loss_aug_net.backward()
     self.aug_stn_optim.step()
-    # return noise
+
+    if self.args.grad_clip and self.args.grad_clip > 0:
+      nn.utils.clip_grad_norm_(self.target_net.parameters(), self.args.grad_clip)
+    self.target_net_optim.step()
 
   def deform_step(self, input, target):
+    # print('updating deform_vae...')
+    # for j in range(self.args.inner_num):
     self.deform_vae_optim.zero_grad()
+    self.target_net_optim.zero_grad()
     input_aug, div_loss, smooth_loss = self.deform_vae(input, require_loss=True)
     input_aug.register_hook(lambda grad: grad * (-self.args.adv_weight_deform))
     output_aug = self.target_net(input_aug, 'deform')
@@ -168,6 +184,19 @@ class Augment(object):
     loss_aug_net = loss_aug + loss_div + loss_smooth
     loss_aug_net.backward()
     self.deform_vae_optim.step()
+
+    if self.args.grad_clip and self.args.grad_clip > 0:
+      nn.utils.clip_grad_norm_(self.target_net.parameters(), self.args.grad_clip)
+    self.target_net_optim.step()
+
+  def comb_step(self, input, target):
+    # print('comb step...')
+    if self.aug_stn:
+      self.stn_step(input, target)
+    if self.deform_vae:
+      self.deform_step(input, target)
+    if self.perturb_vae:
+      self.texture_step(input, target)
 
   def _compute_unrolled_model(self, loss, eta):
 

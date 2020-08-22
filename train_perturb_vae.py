@@ -137,20 +137,25 @@ def train_epoch_two_bns(trainloader, model, epoch, config):
         # print('target size: {}'.format(target.size()))
         input, input_preaug, target = input.cuda(), input_preaug.cuda(), target.cuda()
 
-        model.aug_net_optim.zero_grad()
+        for j in range(config.inner_num):
+            model.aug_net_optim.zero_grad()
+            model.target_net_optim.zero_grad()
+            input_aug, div_loss = model.aug_net(input, require_loss=True)
+            input_aug.register_hook(lambda grad: grad * (-model.args.adv_weight_vae))
+            output_aug = model.target_net(input_aug, 'texture')
+            loss_aug = model.criterion(output_aug, target)
+
+            # loss_adv = -loss_aug * model.args.adv_weight_vae
+            loss_div = div_loss * model.args.div_weight_vae
+            loss_aug_net = loss_aug + loss_div
+            loss_aug_net.backward()
+            model.aug_net_optim.step()
+
+            if config.grad_clip and config.grad_clip > 0:
+                nn.utils.clip_grad_norm_(model.target_net.parameters(), config.grad_clip)
+            model.target_net_optim.step()
+
         model.target_net_optim.zero_grad()
-
-        input_aug, div_loss = model.aug_net(input, require_loss=True)
-        input_aug.register_hook(lambda grad: grad * (-model.args.adv_weight_vae))
-        output_aug = model.target_net(input_aug, 'texture')
-        loss_aug = model.criterion(output_aug, target)
-
-        # loss_adv = -loss_aug * model.args.adv_weight_vae
-        loss_div = div_loss * model.args.div_weight_vae
-        loss_aug_net = loss_aug + loss_div
-        loss_aug_net.backward()
-        model.aug_net_optim.step()
-
         output_preaug = model.target_net(input_preaug, 'base')
         loss_preaug = model.criterion(output_preaug, target)
         loss_preaug.backward()
@@ -165,7 +170,7 @@ def train_epoch_two_bns(trainloader, model, epoch, config):
 
         losses_adv.update((loss_aug * (-model.args.adv_weight_vae)).item(), input.size(0))
         losses_div.update(loss_div.item(), input.size(0))
-        losses.update((loss_aug+loss_preaug).item(), input.size(0))
+        losses.update((loss_aug + loss_preaug).item(), input.size(0))
         acc = utils.accuracy(output_preaug, target)[0]
         top1.update(acc.item(), input.size(0))
 
@@ -180,8 +185,8 @@ def train_epoch_two_bns(trainloader, model, epoch, config):
                   'Loss {losses.val:.4f} ({losses.avg:.4f})\t'
                   'loss_adv {losses_adv.val:.4f} ({losses_adv.avg:.4f})\t'
                   'loss_div {losses_div.val:.4f} ({losses_div.avg:.4f})\t'.format(
-                   epoch, i, len(trainloader), top1=top1, losses=losses,
-                   losses_adv=losses_adv, losses_div=losses_div))
+                epoch, i, len(trainloader), top1=top1, losses=losses,
+                losses_adv=losses_adv, losses_div=losses_div))
             # exit()
 
     print(' * Acc {top1.avg:.3f}% '.format(top1=top1))
