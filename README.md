@@ -30,7 +30,7 @@ P-VAE
 ![](./vis/deform.gif)
 
 ## Run
-We condected experiments in
+We conducted experiments in
 - python 3.7
 - pytorch 1.2, torchvision 0.4.0, cuda10
 
