@@ -27,7 +27,7 @@ D-VAE
 
 P-VAE
 
-![](./vis/deform.gif)
+![](./vis/texture.gif)
 
 ## Run
 We conducted experiments in
